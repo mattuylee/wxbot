@@ -118,7 +118,6 @@ class WebWeixin(object):
         self.memberCount = 0
         self.SpecialUsers = ['newsapp', 'fmessage', 'filehelper', 'weibo', 'qqmail', 'fmessage', 'tmessage', 'qmessage', 'qqsync', 'floatbottle', 'lbsapp', 'shakeapp', 'medianote', 'qqfriend', 'readerapp', 'blogapp', 'facebookapp', 'masssendapp', 'meishiapp', 'feedsapp',
                              'voip', 'blogappweixin', 'weixin', 'brandsessionholder', 'weixinreminder', 'wxid_novlwrv3lqwv11', 'gh_22b87fa7cb3c', 'officialaccounts', 'notification_messages', 'wxid_novlwrv3lqwv11', 'gh_22b87fa7cb3c', 'wxitil', 'userexperience_alarm', 'notification_messages']
-        self.TimeOut = 20  # 同步最短时间间隔（单位：秒）
         self.media_count = -1
 
         self.cookie = http.cookiejar.CookieJar()
@@ -265,6 +264,15 @@ class WebWeixin(object):
         }
         return True
 
+    def logout(self):
+        request = urllib.request.Request(
+            url='https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxlogout?redirect=0&type=1&skey=%s' % self.skey,
+            data=urllib.parse.urlencode({
+                'sid': self.sid,
+                'uin': self.uin,
+            }).encode(encoding='utf-8'))
+        urllib.request.urlopen(request)
+
     def webwxinit(self):
         url = self.base_uri + '/webwxinit?pass_ticket=%s&skey=%s&r=%s' % (
             self.pass_ticket, self.skey, int(time.time()))
@@ -406,7 +414,7 @@ class WebWeixin(object):
             '_': int(time.time()),
         }
         url = 'https://' + self.syncHost + '/cgi-bin/mmwebwx-bin/synccheck?' + urllib.parse.urlencode(params)
-        data = self._get(url, timeout=5)
+        data = self._get(url, timeout=30)
         if data == '':
             return [-1,-1]
 
@@ -893,24 +901,18 @@ class WebWeixin(object):
                 logging.debug('[*] 你在其他地方登录了 WEB 版微信，债见')
                 break
             elif retcode == '0':
-                if selector == '2':
+                shouldSleep = True
+                if selector != '0':
+                    # 有需要同步的消息
                     r = self.webwxsync()
-                    if r is not None:
+                    if r is not None and r['AddMsgCount'] > 0:
+                        shouldSleep = False
                         self.handleMsg(r)
-                elif selector == '6':
-                    # TODO
-                    redEnvelope += 1
-                    print('[*] 收到疑似红包消息 %d 次' % redEnvelope)
-                    logging.debug('[*] 收到疑似红包消息 %d 次' % redEnvelope)
-                elif selector == '7':
-                    playWeChat += 1
-                    print('[*] 你在手机上玩微信被我发现了 %d 次' % playWeChat)
-                    logging.debug('[*] 你在手机上玩微信被我发现了 %d 次' % playWeChat)
-                    r = self.webwxsync()
-                elif selector == '0':
-                    time.sleep(1)
-            if (time.time() - self.lastCheckTs) <= 20:
-                time.sleep(time.time() - self.lastCheckTs)
+                if shouldSleep and time.time() - self.lastCheckTs <= 5:
+                    # 微信有bug，发送某些消息后轮询会立马返回并报告有消息，但是调用同步接口后发现根本没有新消息，当收到其它消息后又会恢复
+                    # 这个现象一般出现在发送表情包之后。可以在浏览器打开控制台，会发现在手机发送表情后轮询接口被疯狂调用
+                    # 这里是防止轮询接口调用太频繁而实际上根本没有消息，浪费带宽
+                    time.sleep(5)
 
     def sendMsg(self, name, word, isfile=False):
         id = self.getUSerID(name)
@@ -1020,6 +1022,7 @@ class WebWeixin(object):
                 listenProcess.terminate()
                 print('[*] 退出微信')
                 logging.debug('[*] 退出微信')
+                self.logout()
                 exit()
             elif text[:2] == '->':
                 [name, word] = text[2:].split(':')

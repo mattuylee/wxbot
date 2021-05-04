@@ -1,8 +1,8 @@
 {
   "modules": [
     {
-      "name": "core",
-      "chnname": "NOTA核心",
+      "name": "wxbot",
+      "chnname": "wxbot",
       "entities": [
         {
           "title": "msg",
@@ -38,12 +38,6 @@
               "chnname": "消息内容"
             },
             {
-              "name": "from_id",
-              "type": "TEXT_ID",
-              "remark": "",
-              "chnname": "发送者ID"
-            },
-            {
               "name": "from_name",
               "type": "TEXT",
               "remark": "备注或昵称",
@@ -56,12 +50,6 @@
               "chnname": "发送者昵称"
             },
             {
-              "name": "to_id",
-              "type": "TEXT_ID",
-              "remark": "",
-              "chnname": "接收者ID"
-            },
-            {
               "name": "to_name",
               "type": "TEXT",
               "remark": "",
@@ -72,12 +60,6 @@
               "type": "TEXT",
               "remark": "",
               "chnname": "接收者昵称"
-            },
-            {
-              "name": "group_id",
-              "type": "TEXT_ID",
-              "remark": "",
-              "chnname": "群组ID"
             },
             {
               "name": "group_name",

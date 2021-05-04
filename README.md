@@ -7,20 +7,20 @@
 ## 数据表结构
 | 字段名 | 类型 | 说明 |
 |  --   | --  | --   |
-| msg_id| TEXT | 消息ID |
+| msg_id| TEXT | 消息ID，结构为创建时间+原微信消息ID |
 |create_time | INTEGER | 创建时间，Unix时间戳 |
-| msg_type | INTEGER | 消息类型，1-文本，3-图片，34-语音，43-视频，0-其它
-| content | TEXT | 消息的文本内容
-| from_id | TEXT | 消息发送者ID（不是微信ID，没啥用），如果是来自群的消息此字段为空
-| from_name | TEXT | 消息发送者的备注，没备注就昵称，如果是来自群的消息此字段为空
-| from_nickname | TEXT | 消息发送者的昵称，如果是来自群的消息此字段为空
-| to_id | TEXT | 接收者ID，如果是发送到群的消息此字段为空
-| to_name | TEXT | 接收者备注，没备注就昵称，如果是发送到群的消息此字段为空
-| to_nickname | TEXT | 接收者昵称，如果是发送到群的消息此字段为空
-| group_id | TEXT | 如果是群消息则为群的ID否则为空，照样，没啥用
-| group_name | TEXT | 如果是群消息则为群聊名称（应该吧🤣我不关注群消息），否则为空
+| msg_type | INTEGER | 消息类型，1-文本，3-图片，34-语音，43-视频，0-其它 |
+| content | TEXT | 消息的文本内容 |
+| from_id | TEXT | 消息发送者ID（不是微信ID，没啥用），如果是来自群的消息此字段为空 |
+| from_name | TEXT | 消息发送者的备注，没备注就昵称，如果是来自群的消息此字段为空 |
+| from_nickname | TEXT | 消息发送者的昵称，如果是来自群的消息此字段为空 |
+| to_id | TEXT | 接收者ID，如果是发送到群的消息此字段为空 |
+| to_name | TEXT | 接收者备注，没备注就昵称，如果是发送到群的消息此字段为空 |
+| to_nickname | TEXT | 接收者昵称，如果是发送到群的消息此字段为空 |
+| group_id | TEXT | 如果是群消息则为群的ID否则为空，照样，没啥用 |
+| group_name | TEXT | 如果是群消息则为群聊名称（应该吧🤣我不关注群消息），否则为空 |
 
-消息里的图片等文件以`img_`，`voice_`等前缀 + 消息ID存储于命令行参数给定的数据目录中。
+消息里的图片等文件以消息ID存储于命令行参数给定的数据目录中，并根据年份划分子目录。
 
 其它信息请参考[项目@Urinx/WeixinBot](https://github.com/Urinx/WeixinBot)。
 
