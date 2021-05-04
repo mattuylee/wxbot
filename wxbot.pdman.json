@@ -1,0 +1,367 @@
+{
+  "modules": [
+    {
+      "name": "core",
+      "chnname": "NOTA核心",
+      "entities": [
+        {
+          "title": "msg",
+          "fields": [
+            {
+              "name": "msg_id",
+              "type": "TEXT",
+              "remark": "",
+              "chnname": "消息ID",
+              "notNull": true,
+              "pk": false,
+              "autoIncrement": false
+            },
+            {
+              "name": "create_time",
+              "type": "DATETIME",
+              "remark": "Unix时间戳",
+              "chnname": "创建时间",
+              "notNull": true,
+              "pk": false
+            },
+            {
+              "name": "msg_type",
+              "type": "ENUM_INTEGER",
+              "remark": "0，不受支持的消息，以文本形式存储\n1，文本消息\n3，图片消息\n34，语音消息\n43，视频消息",
+              "chnname": "消息类型",
+              "notNull": true
+            },
+            {
+              "name": "content",
+              "type": "TEXT",
+              "remark": "",
+              "chnname": "消息内容"
+            },
+            {
+              "name": "from_id",
+              "type": "TEXT_ID",
+              "remark": "",
+              "chnname": "发送者ID"
+            },
+            {
+              "name": "from_name",
+              "type": "TEXT",
+              "remark": "备注或昵称",
+              "chnname": "发送者"
+            },
+            {
+              "name": "from_nickname",
+              "type": "TEXT",
+              "remark": "昵称",
+              "chnname": "发送者昵称"
+            },
+            {
+              "name": "to_id",
+              "type": "TEXT_ID",
+              "remark": "",
+              "chnname": "接收者ID"
+            },
+            {
+              "name": "to_name",
+              "type": "TEXT",
+              "remark": "",
+              "chnname": "接收者"
+            },
+            {
+              "name": "to_nickname",
+              "type": "TEXT",
+              "remark": "",
+              "chnname": "接收者昵称"
+            },
+            {
+              "name": "group_id",
+              "type": "TEXT_ID",
+              "remark": "",
+              "chnname": "群组ID"
+            },
+            {
+              "name": "group_name",
+              "type": "TEXT",
+              "remark": "",
+              "chnname": "群组名称"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "消息",
+          "remark": ""
+        }
+      ],
+      "graphCanvas": {
+        "nodes": [
+          {
+            "shape": "table",
+            "title": "label",
+            "moduleName": false,
+            "x": 840,
+            "y": 640,
+            "id": "d140666b"
+          },
+          {
+            "shape": "table",
+            "title": "article",
+            "moduleName": false,
+            "x": 180,
+            "y": 285.7142857142857,
+            "id": "59f92335"
+          },
+          {
+            "shape": "table",
+            "title": "label_group",
+            "moduleName": false,
+            "x": 1200,
+            "y": 650,
+            "id": "b41dde04"
+          },
+          {
+            "shape": "table",
+            "title": "msg",
+            "moduleName": false,
+            "x": 840,
+            "y": 460,
+            "id": "a3e008eb"
+          },
+          {
+            "shape": "table",
+            "title": "user_role",
+            "moduleName": false,
+            "x": 840,
+            "y": 300,
+            "id": "9e383a0c"
+          },
+          {
+            "shape": "table",
+            "title": "article_field",
+            "moduleName": false,
+            "x": 180,
+            "y": 570,
+            "id": "31a11be8"
+          },
+          {
+            "shape": "table",
+            "title": "article_edition",
+            "moduleName": false,
+            "x": 520,
+            "y": 350,
+            "id": "ff924bfe"
+          }
+        ],
+        "edges": []
+      },
+      "associations": []
+    }
+  ],
+  "dataTypeDomains": {
+    "datatype": [
+      {
+        "name": "文本",
+        "code": "TEXT",
+        "apply": {
+          "Sqlite": {
+            "type": "TEXT"
+          }
+        }
+      },
+      {
+        "name": "整数",
+        "code": "INTEGER",
+        "apply": {
+          "Sqlite": {
+            "type": "INTEGER"
+          }
+        }
+      },
+      {
+        "name": "实数",
+        "code": "REAL",
+        "apply": {
+          "Sqlite": {
+            "type": "REAL"
+          }
+        }
+      },
+      {
+        "name": "日期",
+        "code": "DATE",
+        "apply": {
+          "Sqlite": {
+            "type": "INTEGER"
+          }
+        }
+      },
+      {
+        "name": "日期时间",
+        "code": "DATETIME",
+        "apply": {
+          "Sqlite": {
+            "type": "INTEGER"
+          }
+        }
+      },
+      {
+        "name": "布尔值",
+        "code": "BOOLEAN",
+        "apply": {
+          "Sqlite": {
+            "type": "INTEGER"
+          }
+        }
+      },
+      {
+        "name": "文本枚举",
+        "code": "ENUM_TEXT",
+        "apply": {
+          "Sqlite": {
+            "type": "TEXT"
+          }
+        }
+      },
+      {
+        "name": "整数枚举",
+        "code": "ENUM_INTEGER",
+        "apply": {
+          "Sqlite": {
+            "type": "INTEGER"
+          }
+        }
+      },
+      {
+        "name": "整数主键",
+        "apply": {
+          "Sqlite": {
+            "type": "INTEGER"
+          }
+        },
+        "code": "INTEGER_PK"
+      },
+      {
+        "name": "文本主键",
+        "code": "TEXT_PK",
+        "apply": {
+          "Sqlite": {
+            "type": "TEXT"
+          }
+        }
+      },
+      {
+        "name": "整数唯一",
+        "code": "INTEGER_U",
+        "apply": {
+          "Sqlite": {
+            "type": "INTEGER UNIQUE"
+          }
+        }
+      },
+      {
+        "name": "文本唯一",
+        "code": "TEXT_U",
+        "apply": {
+          "Sqlite": {
+            "type": "TEXT UNIQUE"
+          }
+        }
+      },
+      {
+        "name": "整数标志符",
+        "code": "INTEGER_ID",
+        "apply": {
+          "Sqlite": {
+            "type": "INTEGER"
+          }
+        }
+      },
+      {
+        "name": "文本标识符",
+        "code": "TEXT_ID",
+        "apply": {
+          "Sqlite": {
+            "type": "TEXT"
+          }
+        }
+      },
+      {
+        "name": "二进制数据",
+        "code": "BLOB",
+        "apply": {
+          "Sqlite": {
+            "type": "BLOB"
+          }
+        }
+      }
+    ],
+    "database": [
+      {
+        "code": "Sqlite",
+        "defaultDatabase": true,
+        "fileShow": true,
+        "createTableTemplate": "CREATE TABLE {{=it.entity.title}} (\n{{ pkList = [] ; }}\n{{~ it.entity.fields:field:index }}\n    {{? field.pk }}{{ pkList.push(field) }}{{?}}\n    {{=field.name}} {{=field.type}}{{= field.notNull ? ' NOT NULL' : '' }}{{= field.defaultValue ? it.func.join(' DEFAULT', field.defaultValue, ' ') : '' }}{{= index < it.entity.fields.length - 1 ? ',' : (pkList.length > 0 ? ',' : '') }}\n{{~}}\n{{? pkList.length > 0 }}\n    PRIMARY KEY ({{~ pkList:pkField:i }}{{= pkField.name }}{{= pkField.autoIncrement ? '  AUTOINCREMENT' : '' }}{{= i < pkList.length - 1 ? ',' : '' }}{{~}})\n{{?}}\n){{=it.separator}}\n$blankline\n",
+        "deleteTableTemplate": "DROP TABLE {{=it.entity.title}}{{=it.separator}}",
+        "rebuildTableTemplate": "",
+        "createFieldTemplate": "ALTER TABLE {{=it.entity.title}} ADD {{=it.field.name}} {{=it.field.type}} {{? it.field.notNull}}NOT NULL{{?}} {{? it.field.defaultValue}}DEFAULT {{? null==it.field.defaultValue}}NULL{{??}}'{{=it.field.defaultValue}}'{{?}}{{?}} {{? it.field.pk}}PRIMARY KEY{{?}}{{=it.separator}}",
+        "updateFieldTemplate": "",
+        "deleteFieldTemplate": "",
+        "deleteIndexTemplate": "DROP INDEX {{=it.index.name}}{{=it.separator}}",
+        "createIndexTemplate": "CREATE{{? it.index.isUnique }} UNIQUE{{?}} INDEX {{=it.index.name}} ON {{=it.entity.title}} ({{=it.func.join(...it.index.fields,', ') }}){{=it.separator}}\n\n",
+        "updateTableComment": ""
+      }
+    ]
+  },
+  "profile": {
+    "defaultFields": [],
+    "defaultFieldsType": "1",
+    "javaConfig": {},
+    "sqlConfig": ";",
+    "dbs": [],
+    "wordTemplateConfig": ""
+  }
+}

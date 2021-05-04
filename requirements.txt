@@ -8,3 +8,5 @@ six
 requests_toolbelt
 pyqrcode
 certifi
+argparse
+sqlcipher3-binary

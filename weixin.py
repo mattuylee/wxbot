@@ -23,7 +23,6 @@ from collections import defaultdict
 from urllib.parse import urlparse
 from lxml import html
 from socket import timeout as timeout_error
-#import pdb
 
 # for media upload
 import mimetypes
@@ -616,7 +615,7 @@ class WebWeixin(object):
     def webwxgetmsgimg(self, msgid):
         url = self.base_uri + \
             '/webwxgetmsgimg?MsgID=%s&skey=%s' % (msgid, self.skey)
-        data = self._get(url)
+        data = self._get(url, 'webwxgetmsgimg')
         if data == '':
             return ''
         fn = 'img_' + msgid + '.jpg'
@@ -1104,7 +1103,7 @@ class WebWeixin(object):
             request.add_header('Range', 'bytes=0-')
         try:
             response = urllib.request.urlopen(request, timeout=timeout) if timeout else urllib.request.urlopen(request)
-            if api == 'webwxgetvoice' or api == 'webwxgetvideo':
+            if api == 'webwxgetvoice' or api == 'webwxgetvideo' or api == 'webwxgetmsgimg':
                 data = response.read()
             else:
                 data = response.read().decode('utf-8')
@@ -1128,7 +1127,7 @@ class WebWeixin(object):
     def _post(self, url: object, params: object, jsonfmt: object = True) -> object:
         if jsonfmt:
             data = (json.dumps(params)).encode()
-            
+
             request = urllib.request.Request(url=url, data=data)
             request.add_header(
                 'ContentType', 'application/json; charset=UTF-8')
@@ -1204,16 +1203,3 @@ class UnicodeStreamFilter:
 
     def flush(self):
         self.target.flush()
-
-if sys.stdout.encoding == 'cp936':
-    sys.stdout = UnicodeStreamFilter(sys.stdout)
-
-
-if __name__ == '__main__':
-    logger = logging.getLogger(__name__)
-    if not sys.platform.startswith('win'):
-        import coloredlogs
-        coloredlogs.install(level='DEBUG')
-
-    webwx = WebWeixin()
-    webwx.start()
