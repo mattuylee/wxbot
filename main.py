@@ -112,7 +112,7 @@ class WXBot(WebWeixin):
                 params['to_name'] = '_self'
             if msg['FromUserName'][:2] == '@@':
                 # 群消息
-                if ":<br/>" in content:
+                if ":<br/>" in msg['Content']:
                     [people, content] = msg['Content'].split(':<br/>', 1)
                     params['group_name'] = self.getUserRemarkName(msg['FromUserName'])
                     params['from_name'] = self.getUserRemarkName(people)
