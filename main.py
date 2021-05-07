@@ -27,6 +27,37 @@ class WXBot(WebWeixin):
             if member['UserName'] == id:
                 return member['NickName']
         return None
+    # 获取用户备注（没有则返回昵称）或群名称，若本地无相关数据返回_unknown
+    def getUserOrGroupName(self, id):
+        name = '_unknown'
+        if id == self.User['UserName']:
+            return self.User['NickName']  # 自己
+
+        if id[:2] == '@@':
+            # 群
+            name = self.getGroupName(id)
+        else:
+            # 特殊账号
+            for member in self.SpecialUsersList:
+                if member['UserName'] == id:
+                    name = member['RemarkName'] if member[
+                        'RemarkName'] else member['NickName']
+            # 公众号或服务号
+            for member in self.PublicUsersList:
+                if member['UserName'] == id:
+                    name = member['RemarkName'] if member[
+                        'RemarkName'] else member['NickName']
+            # 直接联系人
+            for member in self.ContactList:
+                if member['UserName'] == id:
+                    name = member['RemarkName'] if member[
+                        'RemarkName'] else member['NickName']
+            # 群友
+            for member in self.GroupMemeberList:
+                if member['UserName'] == id:
+                    name = member['DisplayName'] if member[
+                        'DisplayName'] else member['NickName']
+        return name
 
     def composeMessageID(self, msgID, timestamp):
         return time.strftime('%Y%m%d%H%M%S', time.localtime(timestamp)) + msgID
@@ -100,9 +131,9 @@ class WXBot(WebWeixin):
                 "create_time": msg['CreateTime'],
                 "msg_type": msgType,
                 "content": None,
-                "from_name": self.getUserRemarkName(msg['FromUserName']),
+                "from_name": self.getUserOrGroupName(msg['FromUserName']),
                 "from_nickname": self.getUserNickName(msg['FromUserName']),
-                "to_name": self.getUserRemarkName(msg['ToUserName']),
+                "to_name": self.getUserOrGroupName(msg['ToUserName']),
                 "to_nickname": self.getUserNickName(msg['ToUserName']),
                 "group_name": None
             }
@@ -114,16 +145,19 @@ class WXBot(WebWeixin):
                 # 群消息
                 if ":<br/>" in msg['Content']:
                     [people, content] = msg['Content'].split(':<br/>', 1)
-                    params['group_name'] = self.getUserRemarkName(msg['FromUserName'])
-                    params['from_name'] = self.getUserRemarkName(people)
+                    params['group_name'] = self.getUserOrGroupName(msg['FromUserName'])
+                    params['from_name'] = self.getUserOrGroupName(people)
                     params['to_name'] = params['to_nickname'] = None
             elif msg['ToUserName'][:2] == '@@':
                 # 发送的群消息
-                params['group_name'] = self.getUserRemarkName(msg['ToUserName'])
+                params['group_name'] = self.getUserOrGroupName(msg['ToUserName'])
                 params['from_name'] = self.User['NickName']
                 params['to_name'] = params['to_nickname'] = None
             if msgType == 1:
                 # 文字消息
+                if params['from_name'] == '_unknown' or params['to_name'] == '_unknown':
+                    # 有陌生人的文字消息，可能是新添加的好友，重新获取联系人列表
+                    self.webwxgetcontact()
                 params['content'] = msg['Content'].replace('&lt;', '<').replace('&gt;', '>')
             elif msgType == 3:
                 params['content'] = "[图片](%s)" % composedID
