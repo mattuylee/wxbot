@@ -652,7 +652,7 @@ class WebWeixin(object):
         name = '未知群'
         for member in self.GroupList:
             if member['UserName'] == id:
-                name = member['NickName']
+                name = member['RemarkName'] if member['RemarkName'] else member['NickName']
         if name == '未知群':
             # 现有群里面查不到
             GroupList = self.getNameById(id)
